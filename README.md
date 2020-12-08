@@ -1,3 +1,23 @@
+
+# Stock Symbol Scanner
+Analysis and interpolation of stock symbol performance based on historical publicly available data.
+
+---
+## Tech Stack Defined
+### Devops
+- Repository: [Github](https://github.com/dlbrown06/stock-symbol-scanner)
+- PaaS: Heroku
+
+### Server
+- Backend Framework: [Next.js](https://nextjs.org)
+- Stock Data Sourcing: [Alpha Advantage](https://www.alphavantage.co) & [module](https://www.npmjs.com/package/alphavantage) 
+
+### Front End
+- Front End Framework: [React.js](https://reactjs.org) w/ [Next.js](https://nextjs.org)
+- [Styled Components](https://styled-components.com)
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
