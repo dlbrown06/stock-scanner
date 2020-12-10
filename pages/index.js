@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useState } from "react";
 import useSWR from 'swr';
 import styled from "styled-components";
@@ -16,13 +17,40 @@ const SymbolSearchInput = styled.input`
     text-transform: uppercase;
   `;
 
+const SymbolList = styled.div`
+  background-color: whitesmoke;
+  padding: 1em;
+  border-radius: 0.5em;
+
+  div {
+    cursor: pointer;
+    font-size: 20px;
+    display: block;
+    color: grey;
+    padding: 0.2em;
+  }
+
+  &.isValidating {
+    background-color: black;
+  }
+`;
+
+const ErrorMsg = styled.div`
+  background-color: #ffdddd;
+  color: #ff4c4c;
+  padding: 1em;
+  margin-top: 0.25em;
+  margin-bottom: 1em;
+  border-radius: 0.2em;
+`;
+
 export default function Home() {
   const [searchSymbol, setSearchSymbol] = useState("");
 
   const fetcher = url => fetch(url).then(r => r.json())
   const fetchRsp = useSWR(`/api/search?keywords=${searchSymbol}`, fetcher);
-  const { data } = fetchRsp;
-
+  const { data, error, isValidating } = fetchRsp;
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -41,9 +69,14 @@ export default function Home() {
           Get started by searching a stock symbol
         </p>
         <p><SymbolSearchInput type="text" onKeyUp={e => setSearchSymbol(e.target.value.toUpperCase())} /></p>
-        <ul>
-          {Array.isArray(data) ? data.map((symbolObj, key) => <li key={key}>{symbolObj["1. symbol"]} - {symbolObj["2. name"]}</li>) : null}
-        </ul>
+        {error ? <ErrorMsg>Too many requests. Please wait...</ErrorMsg> : null}
+        {Array.isArray(data) ? (
+          <SymbolList isValidating>
+            {data.map((symbolObj, key) => (
+              <Link href={`/symbols/${symbolObj["1. symbol"]}`} key={key}><SymbolList>👉 {symbolObj["1. symbol"]} - {symbolObj["2. name"]}</SymbolList></Link>
+            ))}
+          </SymbolList>
+        ) : null }    
       </main>
 
       <footer className={styles.footer}>
